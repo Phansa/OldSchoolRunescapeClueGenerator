@@ -84,9 +84,10 @@ def findAllValidItems():
     with open("../data/Items.json", "r") as f:
         data = json.load(f)
     f.close()
-    printAllCurrentItems(data)
+    #printAllCurrentItems(data)
     i = data["MaxIndex"]
-    while(i < 50):
+    print("Current max index is " + str(i))
+    while(i < 350):
         response = getItemDetailForJson(i)
         i += 1
         data["MaxIndex"] = i
