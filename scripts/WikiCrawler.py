@@ -40,16 +40,16 @@ def crawlWiki():
     page = ur.urlopen(URL)
     soup = BeautifulSoup(page, 'html.parser')
     data = {}
-    allJson = processTable(soup, "../images/all", 1)
+    allJson = processTable(soup, "../public/images/all", 1)
     #print(allJson)
     data["All"] = allJson
-    easyJson = processTable(soup, "../images/easy", 2)
+    easyJson = processTable(soup, "../public/images/easy", 2)
     data["Easy"] = easyJson
-    with open("../data/Items.json", "w") as f:
+    with open("../public/data/Items.json", "w") as f:
         json.dump(data, f)
     f.close()
 
-    with open("../data/Items.json", "r") as f:
+    with open("../public/data/Items.json", "r") as f:
         data = json.load(f)
     printAllCurrentItems(data)
     f.close()
