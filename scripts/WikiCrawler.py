@@ -5,8 +5,10 @@ import time
 import os
 from bs4 import BeautifulSoup
 
-
-
+#Install pip and run
+#pip install request
+#pip install beautifulsoup4
+#befor runnign this program
 def saveImage(directoryPath, itemName, itemImage):
     if not(os.path.isfile(directoryPath + itemName +".jpg")):
         imageLink = ur.urlopen(itemImage)
@@ -16,6 +18,7 @@ def saveImage(directoryPath, itemName, itemImage):
 
 
 def processGeneralTable(soup, directoryPath, index):
+    difficulty = directoryPath.split('/')[-1] + "/"
     items = soup.find_all('table', {'class': 'wikitable'})
     result = items[index].find_all('a', {'class': "image image" +
                                      "-thumbnail link-internal"})
@@ -28,11 +31,12 @@ def processGeneralTable(soup, directoryPath, index):
         saveImage(directoryPath, itemName, itemImage)
         itemObject = {}
         itemObject["Name"] = item.get('title')
-        itemObject["Image"] = "/images/" + item.get('title') + ".jpg"
+        itemObject["Image"] = "/images/" + difficulty + item.get('title') + ".jpg"
         outputJson.append(itemObject)
     return outputJson
 
 def processSingleItem(wikiUrl, directoryPath):
+    difficulty = directoryPath.split('/')[-1] + "/"
     page = ur.urlopen(wikiUrl)
     soup = BeautifulSoup(page, "html.parser")
     itemName = wikiUrl.split('/')[-1]
@@ -47,11 +51,12 @@ def processSingleItem(wikiUrl, directoryPath):
         if("vignette" in image.get('src')):
             itemImage = image.get('src')
             break
-    itemJson["Image"] = "/images/" + itemName + ".jpg"
+    itemJson["Image"] = "/images/" + difficulty + itemName + ".jpg"
     saveImage(directoryPath, itemName, itemImage)
     return itemJson
 
 def processTalismans(wikiUrl, directoryPath, table):
+    difficulty = directoryPath.split('/')[-1] + "/"
     page = ur.urlopen(wikiUrl)
     soup = BeautifulSoup(page, "html.parser")
     #Taken from https://stackoverflow.com/questions/28240956/bea
@@ -64,7 +69,7 @@ def processTalismans(wikiUrl, directoryPath, table):
             itemName = image.get('alt')
             itemImage = image.get('src')
             talismanJson["Name"] = itemName
-            talismanJson["Image"] = "/images/" + itemName + ".jpg"
+            talismanJson["Image"] = "/images/" + difficulty + itemName + ".jpg"
             table.append(talismanJson)
             saveImage(directoryPath, itemName, itemImage)
 
@@ -78,6 +83,7 @@ def allowedArmorCheck(item):
     return True
 
 def processArmorAndWeapons(armorType, directoryPath, table):
+    difficulty = directoryPath.split('/')[-1] + "/"
     wikiUrl = "http://oldschoolrunescape.wikia.com/wiki/" + armorType
     page = ur.urlopen(wikiUrl)
     soup = BeautifulSoup(page, "html.parser")
@@ -89,7 +95,7 @@ def processArmorAndWeapons(armorType, directoryPath, table):
             itemJson = {}
             itemImage = image.get('src')
             itemJson["Name"] = itemName
-            itemJson["Image"] = "/images/" + itemName + ".jpg"
+            itemJson["Image"] = "/images/" + difficulty + itemName + ".jpg"
             table.append(itemJson)
             saveImage(directoryPath, itemName, itemImage)
         
