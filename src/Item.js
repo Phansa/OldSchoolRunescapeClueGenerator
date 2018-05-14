@@ -7,7 +7,7 @@ let Item = function statelessFunctionComponentClass(props) {
   };
 
   return (
-    <img src={source} style={style} alt=''/>
+    <img src={"."+source} style={style} alt=''/>
   );
 };
 
