@@ -46,7 +46,12 @@ def processSingleItem(wikiUrl, directoryPath):
         itemName = "Leather cowl"
     itemJson = {}
     itemJson["Name"] = itemName
-    itemImage = soup.find_all("img", {"alt": itemName})#[1].get('src')
+    #The ' character gets replaced in the image's alt tag
+    if("d'hide" in wikiUrl):
+        newItemName = itemName.replace("'", "&#039;")
+        itemImage = soup.find_all("img", {"alt":newItemName})
+    else:
+        itemImage = soup.find_all("img", {"alt": itemName})#[1].get('src')
     for image in itemImage:
         if("vignette" in image.get('src')):
             itemImage = image.get('src')
@@ -138,6 +143,26 @@ def processEasyCommonTable(directoryPath):
     addTableDrops(easyCommonTable)
     return easyCommonTable
 
+def processMediumCommonTable(directoryPath):
+    mediumCommonTable = []
+    #Processing single items from common drop table
+    tableHelper(mediumCommonTable,"Adamant_pickaxe", directoryPath)
+    tableHelper(mediumCommonTable,"Adamantite_nails", directoryPath)
+    tableHelper(mediumCommonTable,"Adamant_crossbow", directoryPath)
+    tableHelper(mediumCommonTable,"Fire_battlestaff", directoryPath)
+    tableHelper(mediumCommonTable,"Green_d'hide_body", directoryPath)
+    tableHelper(mediumCommonTable,"Green_d'hide_chaps", directoryPath)
+    tableHelper(mediumCommonTable,"Yew_shortbow", directoryPath)
+    tableHelper(mediumCommonTable,"Teak_plank", directoryPath)
+    tableHelper(mediumCommonTable,"Swordfish", directoryPath)
+    tableHelper(mediumCommonTable,"Lobster", directoryPath)
+    #Processing armor and weapon sets from common drop table
+    processArmorAndWeapons("Adamant_equipment", directoryPath,
+                           mediumCommonTable)
+    #Adding Unique and All drop items
+    addTableDrops(mediumCommonTable)
+    return mediumCommonTable
+
 def printAllCurrentItems(Data):
     for category in Data:
         print(category)
@@ -155,6 +180,9 @@ def crawlWiki():
     easyDirectoryPath = "../public/images/easy"
     data["EasyUnique"] = processGeneralTable(soup, easyDirectoryPath, 2)
     data["EasyCommon"] = processEasyCommonTable(easyDirectoryPath)
+    mediumDirectoryPath = "../public/images/medium"
+    data["MediumUnique"] = processGeneralTable(soup, mediumDirectoryPath, 3)
+    data["MediumCommon"] = processMediumCommonTable(mediumDirectoryPath)
     with open("../src/data/Items.json", "w") as f:
         json.dump(data, f)
     f.close()
