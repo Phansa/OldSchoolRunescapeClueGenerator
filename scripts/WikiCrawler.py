@@ -79,10 +79,10 @@ def processTalismans(wikiUrl, directoryPath, table):
             saveImage(directoryPath, itemName, itemImage)
 
 def allowedArmorCheck(item):
-    allowed = ["crossbow", "bolts", "arrow", "dart",
+    disallowed = ["crossbow", "bolts", "arrow", "dart",
                   "javelin", "thrownaxe", "knife", "(t)", "(g)", "(h",
-               "(lg)", "brutal", "defender", "gloves", "nails", "hide"]
-    for itemName in allowed:
+               "(lg)", "brutal", "defender", "gloves", "nails", "hide", "Wiki"]
+    for itemName in disallowed:
         if(itemName in item):
             return False
     return True
@@ -163,6 +163,25 @@ def processMediumCommonTable(directoryPath):
     addTableDrops(mediumCommonTable)
     return mediumCommonTable
 
+def processHardCommonTable(directoryPath):
+    hardCommonTable = []
+    #Processing single items from common drop table
+    tableHelper(hardCommonTable,"Black_d'hide_body", directoryPath)
+    tableHelper(hardCommonTable,"Black_d'hide_chaps", directoryPath)
+    tableHelper(hardCommonTable,"Black_d'hide_vamb", directoryPath)
+    tableHelper(hardCommonTable,"Magic_shortbow", directoryPath)
+    tableHelper(hardCommonTable,"Magic_longbow", directoryPath)
+    tableHelper(hardCommonTable,"Law_rune", directoryPath)
+    tableHelper(hardCommonTable,"Nature_rune", directoryPath)
+    tableHelper(hardCommonTable,"Shark", directoryPath)
+    tableHelper(hardCommonTable,"Lobster", directoryPath)
+    #Processing armor and weapon sets from common drop table
+    processArmorAndWeapons("Rune_equipment", directoryPath,
+                           hardCommonTable)
+    #Adding Unique and All drop items
+    addTableDrops(hardCommonTable)
+    return hardCommonTable
+
 def printAllCurrentItems(Data):
     for category in Data:
         print(category)
@@ -183,6 +202,9 @@ def crawlWiki():
     mediumDirectoryPath = "../public/images/medium"
     data["MediumUnique"] = processGeneralTable(soup, mediumDirectoryPath, 3)
     data["MediumCommon"] = processMediumCommonTable(mediumDirectoryPath)
+    hardDirectoryPath = "../public/images/hard"
+    data["HardUnique"] = processGeneralTable(soup, hardDirectoryPath, 4)
+    data["HardCommon"] = processHardCommonTable(hardDirectoryPath)
     with open("../src/data/Items.json", "w") as f:
         json.dump(data, f)
     f.close()
