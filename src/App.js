@@ -22,8 +22,11 @@ class App extends Component {
           <img src={"./images/osrs-logo.png"} width="200px" alt=""/>
           <h1 className="App-title">Osrs Clue Generator</h1>
         </header>
-        <button onClick={() => {this.generateClueScroll("Easy")}}> Generate easy clue scroll. </button>
-        <button onClick={() => {this.generateClueScroll("Medium")}}> Generate medium clue scroll. </button>
+        <button onClick={() => {this.generateClueScroll("Easy")}}> Generate an easy clue scroll. </button>
+        <br />
+        <button onClick={() => {this.generateClueScroll("Medium")}}> Generate a medium clue scroll. </button>
+        <br />
+        <button onClick={() => {this.generateClueScroll("Hard")}}> Generate a hard clue scroll. </button>
         <div className="Container">
           <div className="row">
             <div className="col-sm-12 text-center">
@@ -47,26 +50,51 @@ class App extends Component {
   {
     return Math.floor(Math.random() * number);
   }
+  //1/5 chance of getting onto rare drop table. Else common.
   generateClueScroll(difficulty)
   {
     let roll = 0;
+    let minimum = 0;
     if(difficulty === "Easy")
     {
       roll = 2;
+      minimum = 2;
     }
     else if(difficulty === "Medium")
     {
       roll = 3;
+      minimum = 3;
+    }
+    else if(difficulty === "Hard")
+    {
+      roll = 3;
+      minimum = 4;
     }
     let result = this.randomRoll(roll);
-    let minRewards = 2 + result;
+    let minRewards = minimum + result;
     let rewards = [];
-    let size = itemsJson[difficulty + "Unique"].length;
+    let reward = "";
     let i = 0;
     for(i = 0; i < minRewards; ++i)
     {
-      let reward1 = itemsJson[difficulty +"Unique"][this.randomRoll(size)];
-      rewards.push(reward1);  
+      let rareDrop = Math.floor(Math.random() * 4);
+      if(rareDrop === 4)
+      {
+        reward = itemsJson[difficulty +"Unique"][this.randomRoll(itemsJson[difficulty + "Unique"].length)];
+      }
+      else
+      {
+        let commonDrop = Math.floor(Math.random()*2);
+        if(commonDrop === 1)
+        {
+          reward = itemsJson[difficulty +"Common"][this.randomRoll(itemsJson[difficulty +"Common"].length)];
+        }
+        else
+        {
+          reward = itemsJson["All"][this.randomRoll(itemsJson["All"].length)]
+        }
+      }
+      rewards.push(reward);  
     }
     this.setState({globalItems: rewards});
   }

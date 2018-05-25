@@ -140,7 +140,7 @@ def processEasyCommonTable(directoryPath):
     processTalismans("http://oldschoolrunescape.wikia.com/wiki/Talisman",
                      directoryPath, easyCommonTable)
     #Adding Unique and All drop items
-    addTableDrops(easyCommonTable)
+    #addTableDrops(easyCommonTable)
     return easyCommonTable
 
 def processMediumCommonTable(directoryPath):
@@ -160,7 +160,7 @@ def processMediumCommonTable(directoryPath):
     processArmorAndWeapons("Adamant_equipment", directoryPath,
                            mediumCommonTable)
     #Adding Unique and All drop items
-    addTableDrops(mediumCommonTable)
+    #addTableDrops(mediumCommonTable)
     return mediumCommonTable
 
 def processHardCommonTable(directoryPath):
@@ -179,7 +179,7 @@ def processHardCommonTable(directoryPath):
     processArmorAndWeapons("Rune_equipment", directoryPath,
                            hardCommonTable)
     #Adding Unique and All drop items
-    addTableDrops(hardCommonTable)
+    #addTableDrops(hardCommonTable)
     return hardCommonTable
 
 def printAllCurrentItems(Data):
