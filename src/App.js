@@ -10,7 +10,7 @@ class App extends Component {
     this.randomRoll = this.randomRoll.bind(this);
     this.generateClueScroll = this.generateClueScroll.bind(this);
     this.state = {
-      globalItems : [{Image:"./images/all/Air rune.jpg"}]
+      globalItems : [{Image:"/images/all/Air rune.jpg"}]
     };
     this.createItems = this.createItems.bind(this);
     this.createItem = this.createItem.bind(this);
@@ -19,7 +19,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={"./images/osrs-logo.png"} width="200px" alt=""/>
+          <img src={"/images/osrs-logo.png"} width="200px" alt=""/>
           <h1 className="App-title">Osrs Clue Generator</h1>
         </header>
         <button onClick={() => {this.generateClueScroll("Easy")}}> Generate an easy clue scroll. </button>
