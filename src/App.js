@@ -19,7 +19,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={"/images/osrs-logo.png"} width="200px" alt=""/>
+          <img src={"./images/osrs-logo.png"} width="200px" alt=""/>
           <h1 className="App-title">Osrs Clue Generator</h1>
         </header>
         <button onClick={() => {this.generateClueScroll("Easy")}}> Generate an easy clue scroll. </button>
