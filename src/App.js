@@ -55,20 +55,24 @@ class App extends Component {
   {
     let roll = 0;
     let minimum = 0;
+    let rareChance = 16;
     if(difficulty === "Easy")
     {
       roll = 2;
       minimum = 2;
+      rareChance = 10;
     }
     else if(difficulty === "Medium")
     {
-      roll = 3;
+      roll = 2;
       minimum = 3;
+      rareChance = 12;
     }
     else if(difficulty === "Hard")
     {
       roll = 3;
       minimum = 4;
+      rareChance = 16;
     }
     let result = this.randomRoll(roll);
     let minRewards = minimum + result;
@@ -77,21 +81,20 @@ class App extends Component {
     let i = 0;
     for(i = 0; i < minRewards; ++i)
     {
-      let rareDrop = Math.floor(Math.random() * 4);
-      if(rareDrop === 4)
+      let rareDrop = Math.floor(Math.random() * rareChance);
+      if(rareDrop === rareChance)
       {
         reward = itemsJson[difficulty +"Unique"][this.randomRoll(itemsJson[difficulty + "Unique"].length)];
       }
       else
       {
-        let commonDrop = Math.floor(Math.random()*2);
-        if(commonDrop === 1)
+        if(rareDrop === 1)
         {
-          reward = itemsJson[difficulty +"Common"][this.randomRoll(itemsJson[difficulty +"Common"].length)];
+          reward = itemsJson["All"][this.randomRoll(itemsJson["All"].length)]
         }
         else
         {
-          reward = itemsJson["All"][this.randomRoll(itemsJson["All"].length)]
+          reward = itemsJson[difficulty +"Common"][this.randomRoll(itemsJson[difficulty +"Common"].length)];
         }
       }
       rewards.push(reward);  
