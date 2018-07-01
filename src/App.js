@@ -27,6 +27,8 @@ class App extends Component {
         <button onClick={() => {this.generateClueScroll("Medium")}}> Generate a medium clue scroll. </button>
         <br />
         <button onClick={() => {this.generateClueScroll("Hard")}}> Generate a hard clue scroll. </button>
+        <br />
+        <button onClick={() => {this.generateClueScroll("Elite")}}> Generate an elite clue scroll. </button>
         <div className="Container">
           <div className="row">
             <div className="col-sm-12 text-center">
@@ -60,19 +62,25 @@ class App extends Component {
     {
       roll = 2;
       minimum = 2;
-      rareChance = 10;
+      rareChance = 20;
     }
     else if(difficulty === "Medium")
     {
       roll = 2;
       minimum = 3;
-      rareChance = 12;
+      rareChance = 18;
     }
     else if(difficulty === "Hard")
     {
       roll = 3;
       minimum = 4;
       rareChance = 16;
+    }
+    else if(difficulty === "Elite")
+    {
+      roll = 3;
+      minimum = 4;
+      rareChance = 14;
     }
     let result = this.randomRoll(roll);
     let minRewards = minimum + result;

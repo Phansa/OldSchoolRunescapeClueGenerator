@@ -28,6 +28,8 @@ def processGeneralTable(soup, directoryPath, index):
     for item in result:
         itemImage = item.find_all("img")[1].get('src')
         itemName = item.get('title')
+        if(itemName == "Dragon legs/skirt ornament kit"):
+            itemName = "Dragon legs&skirt ornament kit"
         saveImage(directoryPath, itemName, itemImage)
         itemObject = {}
         itemObject["Name"] = item.get('title')
@@ -50,6 +52,8 @@ def processSingleItem(wikiUrl, directoryPath):
     if("d'hide" in wikiUrl):
         newItemName = itemName.replace("'", "&#039;")
         itemImage = soup.find_all("img", {"alt":newItemName})
+    elif("bolt_tip" in wikiUrl or "seed" in wikiUrl):
+        itemImage = soup.find_all("img", {"alt":itemName + " 5"})
     else:
         itemImage = soup.find_all("img", {"alt": itemName})#[1].get('src')
     for image in itemImage:
@@ -139,8 +143,6 @@ def processEasyCommonTable(directoryPath):
     #Processing talismans
     processTalismans("http://oldschoolrunescape.wikia.com/wiki/Talisman",
                      directoryPath, easyCommonTable)
-    #Adding Unique and All drop items
-    #addTableDrops(easyCommonTable)
     return easyCommonTable
 
 def processMediumCommonTable(directoryPath):
@@ -159,8 +161,6 @@ def processMediumCommonTable(directoryPath):
     #Processing armor and weapon sets from common drop table
     processArmorAndWeapons("Adamant_equipment", directoryPath,
                            mediumCommonTable)
-    #Adding Unique and All drop items
-    #addTableDrops(mediumCommonTable)
     return mediumCommonTable
 
 def processHardCommonTable(directoryPath):
@@ -178,9 +178,40 @@ def processHardCommonTable(directoryPath):
     #Processing armor and weapon sets from common drop table
     processArmorAndWeapons("Rune_equipment", directoryPath,
                            hardCommonTable)
-    #Adding Unique and All drop items
-    #addTableDrops(hardCommonTable)
     return hardCommonTable
+
+def processEliteCommonTable(directoryPath):
+    eliteCommonTable = []
+    #Processing single items from common drop table
+    tableHelper(eliteCommonTable,"Super_restore(4)", directoryPath)
+    tableHelper(eliteCommonTable,"Saradomin_brew(4)", directoryPath)
+    tableHelper(eliteCommonTable,"Extended_antifire(4)", directoryPath)
+    tableHelper(eliteCommonTable,"Ranging_potion(4)", directoryPath)
+    tableHelper(eliteCommonTable,"Battlestaff", directoryPath)
+    tableHelper(eliteCommonTable,"Onyx_bolt_tips", directoryPath)
+    tableHelper(eliteCommonTable,"Loop_half_of_key", directoryPath)
+    tableHelper(eliteCommonTable,"Tooth_half_of_key", directoryPath)
+    tableHelper(eliteCommonTable,"Death_rune", directoryPath)
+    tableHelper(eliteCommonTable,"Law_rune", directoryPath)
+    tableHelper(eliteCommonTable,"Soul_rune", directoryPath)
+    tableHelper(eliteCommonTable,"Death_rune", directoryPath)
+    tableHelper(eliteCommonTable,"Tuna_potato", directoryPath)
+    tableHelper(eliteCommonTable,"Summer_pie", directoryPath)
+    tableHelper(eliteCommonTable,"Tuna_potato", directoryPath)
+    tableHelper(eliteCommonTable,"Plank", directoryPath)
+    tableHelper(eliteCommonTable,"Oak_plank", directoryPath)
+    tableHelper(eliteCommonTable,"Teak_plank", directoryPath)
+    tableHelper(eliteCommonTable,"Mahogany_plank", directoryPath)
+    tableHelper(eliteCommonTable,"Dragonstone_ring", directoryPath)
+    tableHelper(eliteCommonTable,"Dragon_necklace", directoryPath)
+    tableHelper(eliteCommonTable,"Dragonstone_bracelet", directoryPath)
+    tableHelper(eliteCommonTable,"Dragonstone_amulet", directoryPath)
+    tableHelper(eliteCommonTable,"Yew_seed", directoryPath)
+    tableHelper(eliteCommonTable,"Magic_seed", directoryPath)
+    #Processing armor and weapon sets from common drop table
+    processArmorAndWeapons("Rune_equipment", directoryPath,
+                           eliteCommonTable)
+    return eliteCommonTable
 
 def printAllCurrentItems(Data):
     for category in Data:
@@ -205,14 +236,16 @@ def crawlWiki():
     hardDirectoryPath = "../public/images/hard"
     data["HardUnique"] = processGeneralTable(soup, hardDirectoryPath, 4)
     data["HardCommon"] = processHardCommonTable(hardDirectoryPath)
+    eliteDirectoryPath = "../public/images/elite"
+    data["EliteUnique"] = processGeneralTable(soup, eliteDirectoryPath, 5)
+    data["EliteCommon"] = processEliteCommonTable(eliteDirectoryPath)
     with open("../src/data/Items.json", "w") as f:
         json.dump(data, f)
     f.close()
-
     with open("../src/data/Items.json", "r") as f:
         data = json.load(f)
-    #printAllCurrentItems(data)
     f.close()
+
 if __name__ == "__main__":
     crawlWiki()
 
