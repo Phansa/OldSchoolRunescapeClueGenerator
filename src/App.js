@@ -46,7 +46,7 @@ class App extends Component {
   }
   createItem(item)
   {
-    return <Item source={item['Image']}/>
+    return <Item source={item['Image']} title={item['Name']}/>
   }
   randomRoll(number)
   {
